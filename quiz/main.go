@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
 	"strings"
 	"time"
@@ -31,6 +32,7 @@ func main() {
 	}
 
 	problems := ParseLines(lines)
+	Shuffle(problems)
 
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 	correct := 0
@@ -56,6 +58,12 @@ func main() {
 	}
 
 	fmt.Printf("You scored %d out of %d.\n", correct, len(problems))
+}
+
+func Shuffle(problems []Problem) {
+	rand.Shuffle(len(problems), func(i, j int) {
+		problems[i], problems[j] = problems[j], problems[i]
+	})
 }
 
 func ParseLines(lines [][]string) []Problem {
