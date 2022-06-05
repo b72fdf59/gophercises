@@ -33,15 +33,25 @@ func main() {
 	problems := ParseLines(lines)
 
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
-	<-timer.C
-
 	correct := 0
 	for i, problem := range problems {
-		fmt.Printf("Problem #%d: %s = \n", i+1, problem.question)
-		var answer string
-		fmt.Scanf("%s\n", &answer)
-		if answer == problem.answer {
-			correct++
+		answerChannel := make(chan string)
+
+		fmt.Printf("Problem #%d: %s = ", i+1, problem.question)
+		go func() {
+			var answer string
+			fmt.Scanf("%s\n", &answer)
+			answerChannel <- answer
+		}()
+
+		select {
+		case <-timer.C:
+			fmt.Printf("\n You scored %d out of %d.\n", correct, len(problems))
+			return
+		case answer := <-answerChannel:
+			if answer == problem.answer {
+				correct++
+			}
 		}
 	}
 
