@@ -2,7 +2,6 @@ package main
 
 import (
 	"cyoa/internal/core"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -18,9 +17,8 @@ func main() {
 		panic(err)
 	}
 
-	dec := json.NewDecoder(f)
-	var story core.Story
-	if err := dec.Decode(&story); err != nil {
+	story, err := core.JsonStory(f)
+	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("%+v", story)
