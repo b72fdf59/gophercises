@@ -25,7 +25,7 @@ func main() {
 		panic(err)
 	}
 
-	h := core.NewHandler(story, nil)
+	h := core.NewHandler(story)
 	fmt.Printf("Starting the server on the port: %d\n", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), h))
 
