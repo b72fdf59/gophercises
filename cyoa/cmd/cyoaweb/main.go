@@ -26,7 +26,9 @@ func main() {
 	}
 
 	h := core.NewHandler(story)
+	mux := http.NewServeMux()
+	mux.Handle("/", h)
 	fmt.Printf("Starting the server on the port: %d\n", *port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), h))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), mux))
 
 }
